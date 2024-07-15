@@ -1,13 +1,13 @@
-package edu.douglaslima.santander.api;
+package edu.douglaslima.entrycontrol;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SantanderApirestNaNuvemComRailwayApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SantanderApirestNaNuvemComRailwayApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }

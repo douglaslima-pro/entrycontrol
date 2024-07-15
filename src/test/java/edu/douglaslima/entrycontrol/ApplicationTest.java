@@ -1,10 +1,10 @@
-package edu.douglaslima.santander.api;
+package edu.douglaslima.entrycontrol;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SantanderApirestNaNuvemComRailwayApplicationTests {
+class ApplicationTest {
 
 	@Test
 	void contextLoads() {
