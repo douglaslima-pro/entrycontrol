@@ -1,12 +1,15 @@
 package edu.douglaslima.entrycontrol.domain.usuario;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import edu.douglaslima.entrycontrol.domain.endereco.Endereco;
 import edu.douglaslima.entrycontrol.domain.perfil.Perfil;
+import edu.douglaslima.entrycontrol.domain.perfil.PerfilEnum;
 import edu.douglaslima.entrycontrol.domain.telefone.Telefone;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,6 +28,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "tb_usuario")
@@ -32,6 +36,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Usuario {
 	
 	@Id
@@ -48,10 +53,10 @@ public class Usuario {
 	private String usuario;
 	@Column(length = 150, nullable = false, unique = true)
 	private String email;
-	@Column(length = 30, nullable = false)
+	@Column(nullable = false)
 	private String senha;
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnoreProperties("usuario")
+	@JsonManagedReference
 	private List<Telefone> telefones;
 	@Embedded
 	private Endereco endereco;
@@ -62,6 +67,112 @@ public class Usuario {
 	public void adicionarTelefone(Telefone telefone) {
 		telefone.setUsuario(this);
 		telefones.add(telefone);
+	}
+	
+	private Usuario(UsuarioBuilder builder) {
+		this.nome = builder.nome;
+		this.bio = builder.bio;
+		this.dataNascimento = builder.dataNascimento;
+		this.sexo = builder.sexo;
+		this.usuario = builder.usuario;
+		this.email = builder.email;
+		this.senha = builder.senha;
+		this.telefones = builder.telefones;
+		this.endereco = builder.endereco;
+		this.perfis = builder.perfis
+				.stream()
+				.map(perfil -> {
+					perfil.setUsuarios(new ArrayList<>());
+					perfil.getUsuarios().add(this);
+					return perfil;
+				})
+				.toList();
+	}
+	
+	public static UsuarioBuilder builder() {
+		return new UsuarioBuilder();
+	}
+	
+	public static class UsuarioBuilder {
+		
+		private String nome;
+		private String bio;
+		private LocalDate dataNascimento;
+		private char sexo;
+		private String usuario;
+		private String email;
+		private String senha;
+		private List<Telefone> telefones;
+		private Endereco endereco;
+		private List<Perfil> perfis;
+		
+		private UsuarioBuilder() {}
+		
+		public UsuarioBuilder nome(String nome) {
+			this.nome = nome;
+			return this;
+		}
+		
+		public UsuarioBuilder bio(String bio) {
+			this.bio = bio;
+			return this;
+		}
+		
+		public UsuarioBuilder dataNascimento(LocalDate dataNascimento) {
+			this.dataNascimento = dataNascimento;
+			return this;
+		}
+		
+		public UsuarioBuilder sexo(char sexo) {
+			this.sexo = sexo;
+			return this;
+		}
+
+		public UsuarioBuilder usuario(String usuario) {
+			this.usuario = usuario;
+			return this;
+		}
+		
+		public UsuarioBuilder email(String email) {
+			this.email = email;
+			return this;
+		}
+		
+		public UsuarioBuilder senha(String senha) {
+			this.senha = senha;
+			return this;
+		}
+
+		public UsuarioBuilder telefones(List<Telefone> telefones) {
+			this.telefones = telefones;
+			return this;
+		}
+
+		public UsuarioBuilder endereco(Endereco endereco) {
+			this.endereco = endereco;
+			return this;
+		}
+
+		public UsuarioBuilder perfis(List<Perfil> perfis) {
+			this.perfis = perfis;
+			return this;
+		}
+	
+		public UsuarioBuilder perfis(PerfilEnum... perfis) {
+			this.perfis = Stream.of(perfis)
+					.map(perfilEnum -> {
+						Perfil perfil = new Perfil();
+						perfil.setNome(perfilEnum);
+						return perfil;
+						})
+					.toList();
+			return this;
+		}
+		
+		public Usuario build() {
+			return new Usuario(this);
+		}
+		
 	}
 
 }

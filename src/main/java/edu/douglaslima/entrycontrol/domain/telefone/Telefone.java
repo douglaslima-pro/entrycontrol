@@ -1,6 +1,6 @@
 package edu.douglaslima.entrycontrol.domain.telefone;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import edu.douglaslima.entrycontrol.domain.usuario.Usuario;
 import jakarta.persistence.Column;
@@ -36,7 +36,7 @@ public class Telefone {
 	private String sufixo;
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
-	@JsonIgnoreProperties("telefones")
+	@JsonBackReference
 	private Usuario usuario;
 	@Column(nullable = false)
 	private String tipo;

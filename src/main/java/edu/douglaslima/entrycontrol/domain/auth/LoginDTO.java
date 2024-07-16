@@ -1,5 +1,5 @@
 package edu.douglaslima.entrycontrol.domain.auth;
 
-public class LoginDTO {
+public record LoginDTO(String username, String password) {
 
 }
