@@ -16,12 +16,15 @@ public class InsereOsPerfisNoBanco implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Perfil user = new Perfil();
-		user.setNome(PerfilEnum.USER);
-		Perfil admin = new Perfil();
-		admin.setNome(PerfilEnum.ADMIN);
-		perfilRepository.save(user);
-		perfilRepository.save(admin);
+		
+		Perfil perfilUser = new Perfil();
+		perfilUser.setNome(PerfilEnum.USER);
+		
+		Perfil perfilAdmin = new Perfil();
+		perfilAdmin.setNome(PerfilEnum.ADMIN);
+		
+		perfilRepository.save(perfilUser);
+		perfilRepository.save(perfilAdmin);
 	}
 
 }

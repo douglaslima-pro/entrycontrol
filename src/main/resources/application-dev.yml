@@ -13,7 +13,7 @@ spring:
         trace: false
         web-allow-others: false
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     properties:
@@ -22,5 +22,5 @@ spring:
 projeto:
   security:
     jwt:
-      secret: 
+      secret: bxOksa8BHgdAhR80Y3pEYvS5M+MnF2sheFDqprkTqQ4odqoszJLW1ikw64/nT/dTvlgrcBTq7HfK1B9Gai2h5A==
       expiration: 3600000

@@ -8,6 +8,7 @@ import edu.douglaslima.entrycontrol.domain.usuario.Usuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
@@ -27,7 +28,7 @@ public class Perfil {
 	@Id
 	@Enumerated(EnumType.STRING)
 	private PerfilEnum nome;
-	@ManyToMany(mappedBy = "perfis")
+	@ManyToMany(mappedBy = "perfis", fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Usuario> usuarios;
 

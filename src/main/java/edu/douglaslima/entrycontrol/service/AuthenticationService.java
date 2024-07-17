@@ -1,8 +1,5 @@
 package edu.douglaslima.entrycontrol.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import edu.douglaslima.entrycontrol.domain.auth.AuthenticatedResponseDTO;
 import edu.douglaslima.entrycontrol.domain.auth.LoginDTO;
+import edu.douglaslima.entrycontrol.domain.perfil.Perfil;
 import edu.douglaslima.entrycontrol.domain.perfil.PerfilEnum;
 import edu.douglaslima.entrycontrol.domain.usuario.Usuario;
 import edu.douglaslima.entrycontrol.domain.usuario.UsuarioDTO;
+import edu.douglaslima.entrycontrol.repository.PerfilRepository;
 import edu.douglaslima.entrycontrol.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +28,8 @@ public class AuthenticationService {
 	private final TokenService tokenService;
 	@Autowired
 	private final UsuarioRepository usuarioRepository;
+	@Autowired
+	private final PerfilRepository perfilRepository;
 	@Autowired
 	private final PasswordEncoder passwordEncoder;
 
@@ -51,6 +52,8 @@ public class AuthenticationService {
 			throw new IllegalArgumentException("E-mail já existe!");
 		}
 		
+		Perfil perfilUser = perfilRepository.findById(PerfilEnum.USER).get();
+		
 		Usuario usuario = Usuario.builder()
 				.nome(usuarioDTO.nome())
 				.bio(usuarioDTO.bio())
@@ -61,12 +64,9 @@ public class AuthenticationService {
 				.senha(passwordEncoder.encode(usuarioDTO.senha()))
 				.telefones(usuarioDTO.telefones())
 				.endereco(usuarioDTO.endereco())
-				.perfis(PerfilEnum.USER)
+				.perfis(perfilUser)
 				.build();
-		
-		System.out.println(usuarioDTO);
-		System.out.println(usuario);
-		
+
 		usuarioRepository.save(usuario);
 		return usuario;
 	}

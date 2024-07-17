@@ -11,11 +11,17 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class TokenService {
 
-	private int expiration = 3_600_000;
+	@Value("${projeto.security.jwt.secret}")
+	private String secret;
+	@Value("${projeto.security.jwt.expiration}")
+	private int expiration;
 	
 	public String generateToken(Authentication authentication) {
 		UserDetails user = (UserDetails) authentication.getPrincipal();
@@ -28,7 +34,8 @@ public class TokenService {
 	}
 	
 	private SecretKey signingKey() {
-		return Jwts.SIG.HS512.key().build();
+		SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+		return key;
 	}
 	
 	public String getUsernameFromToken(String token) {

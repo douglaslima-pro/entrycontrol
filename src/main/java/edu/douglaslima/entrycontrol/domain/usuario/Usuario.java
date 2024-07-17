@@ -1,15 +1,14 @@
 package edu.douglaslima.entrycontrol.domain.usuario;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import edu.douglaslima.entrycontrol.domain.endereco.Endereco;
 import edu.douglaslima.entrycontrol.domain.perfil.Perfil;
-import edu.douglaslima.entrycontrol.domain.perfil.PerfilEnum;
 import edu.douglaslima.entrycontrol.domain.telefone.Telefone;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -46,6 +45,7 @@ public class Usuario {
 	@Column(length = 150, nullable = false)
 	private String nome;
 	private String bio;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	@Column(name = "data_nascimento")
 	private LocalDate dataNascimento;
 	private char sexo;
@@ -60,7 +60,7 @@ public class Usuario {
 	private List<Telefone> telefones;
 	@Embedded
 	private Endereco endereco;
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "tb_usuario_perfil", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "nome"))
 	private List<Perfil> perfis;
 	
@@ -77,16 +77,15 @@ public class Usuario {
 		this.usuario = builder.usuario;
 		this.email = builder.email;
 		this.senha = builder.senha;
-		this.telefones = builder.telefones;
-		this.endereco = builder.endereco;
-		this.perfis = builder.perfis
+		this.telefones = builder.telefones
 				.stream()
-				.map(perfil -> {
-					perfil.setUsuarios(new ArrayList<>());
-					perfil.getUsuarios().add(this);
-					return perfil;
+				.map(telefone -> {
+					telefone.setUsuario(this);
+					return telefone;
 				})
 				.toList();
+		this.endereco = builder.endereco;
+		this.perfis = builder.perfis;
 	}
 	
 	public static UsuarioBuilder builder() {
@@ -157,15 +156,9 @@ public class Usuario {
 			this.perfis = perfis;
 			return this;
 		}
-	
-		public UsuarioBuilder perfis(PerfilEnum... perfis) {
-			this.perfis = Stream.of(perfis)
-					.map(perfilEnum -> {
-						Perfil perfil = new Perfil();
-						perfil.setNome(perfilEnum);
-						return perfil;
-						})
-					.toList();
+
+		public UsuarioBuilder perfis(Perfil... perfis) {
+			this.perfis = Arrays.asList(perfis);
 			return this;
 		}
 		
