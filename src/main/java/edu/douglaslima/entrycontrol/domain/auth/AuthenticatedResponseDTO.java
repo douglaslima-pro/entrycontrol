@@ -1,5 +1,7 @@
 package edu.douglaslima.entrycontrol.domain.auth;
 
-public record AuthenticatedResponseDTO(String token) {
+import java.util.Date;
+
+public record AuthenticatedResponseDTO(String username, String token, Date expiration) {
 
 }

@@ -41,4 +41,50 @@ public class Telefone {
 	@Column(nullable = false)
 	private String tipo;
 	
+	private Telefone(TelefoneBuilder builder) {
+		this.ddd = builder.ddd;
+		this.prefixo = builder.prefixo;
+		this.sufixo = builder.sufixo;
+		this.tipo = builder.tipo;
+	}
+	
+	public static TelefoneBuilder builder() {
+		return new TelefoneBuilder();
+	}
+	
+	public static class TelefoneBuilder {
+
+		private String ddd;
+		private String prefixo;
+		private String sufixo;
+		private String tipo;
+		
+		private TelefoneBuilder() {}
+		
+		public TelefoneBuilder ddd(String ddd) {
+			this.ddd = ddd;
+			return this;
+		}
+
+		public TelefoneBuilder prefixo(String prefixo) {
+			this.prefixo = prefixo;
+			return this;
+		}
+		
+		public TelefoneBuilder sufixo(String sufixo) {
+			this.sufixo = sufixo;
+			return this;
+		}
+		
+		public TelefoneBuilder tipo(String tipo) {
+			this.tipo = tipo;
+			return this;
+		}
+		
+		public Telefone build() {
+			return new Telefone(this);
+		}
+		
+	}
+	
 }

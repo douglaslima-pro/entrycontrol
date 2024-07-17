@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import edu.douglaslima.entrycontrol.exception.TokenInvalidoException;
 import edu.douglaslima.entrycontrol.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,18 +27,24 @@ public class TokenFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		String token = getTokenFromRequest(request);
-		if (tokenService.validateToken(token)) {
-			String username = tokenService.getUsernameFromToken(token);
-			UserDetails user = userDetailsService.loadUserByUsername(username);
+			throws ServletException, IOException, TokenInvalidoException {
+		String token = extractTokenFromRequest(request);
+		if (token == null) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+		String username = tokenService.getUsername(token);
+		UserDetails user = userDetailsService.loadUserByUsername(username);
+		if (tokenService.validateToken(token, user)) {
 			UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(userAuthentication);
+		} else {
+			throw new TokenInvalidoException("O token informado no cabeçalho da solicitação é inválido");
 		}
 		filterChain.doFilter(request, response);
 	}
 
-	private String getTokenFromRequest(HttpServletRequest request) {
+	private String extractTokenFromRequest(HttpServletRequest request) {
 		String authorization = request.getHeader("Authorization");
 		if (authorization != null && authorization.startsWith("Bearer")) {
 			return authorization.replace("Bearer ", "");

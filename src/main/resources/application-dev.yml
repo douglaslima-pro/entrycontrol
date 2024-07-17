@@ -22,5 +22,5 @@ spring:
 projeto:
   security:
     jwt:
-      secret: bxOksa8BHgdAhR80Y3pEYvS5M+MnF2sheFDqprkTqQ4odqoszJLW1ikw64/nT/dTvlgrcBTq7HfK1B9Gai2h5A==
+      secret: Vs+7sKclXPSOdZsXXiJ/CZN2DOUD7P1EySdHZKS5v9cMcW9D3r7tehXTGSQege+46+xnaMa/5GzWgph8yzn1GA==
       expiration: 3600000

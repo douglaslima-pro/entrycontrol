@@ -1,10 +1,13 @@
 package edu.douglaslima.entrycontrol.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,7 @@ import edu.douglaslima.entrycontrol.domain.auth.AuthenticatedResponseDTO;
 import edu.douglaslima.entrycontrol.domain.auth.LoginDTO;
 import edu.douglaslima.entrycontrol.domain.perfil.Perfil;
 import edu.douglaslima.entrycontrol.domain.perfil.PerfilEnum;
+import edu.douglaslima.entrycontrol.domain.telefone.Telefone;
 import edu.douglaslima.entrycontrol.domain.usuario.Usuario;
 import edu.douglaslima.entrycontrol.domain.usuario.UsuarioDTO;
 import edu.douglaslima.entrycontrol.repository.PerfilRepository;
@@ -34,26 +38,35 @@ public class AuthenticationService {
 	private final PasswordEncoder passwordEncoder;
 
 	public AuthenticatedResponseDTO login(LoginDTO loginDTO) {
-		try {
-			UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken(loginDTO.username(), loginDTO.password());
-			Authentication userAuthenticated = authenticationManager.authenticate(userAuthentication);
-			String token = tokenService.generateToken(userAuthenticated);
-			return new AuthenticatedResponseDTO(token);
-		} catch (BadCredentialsException e) {
-			throw new BadCredentialsException("Nome de usuário ou senha incorretos!");
-		}
+		UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken(loginDTO.username(), loginDTO.password());
+		Authentication userAuthenticated = authenticationManager.authenticate(userAuthentication);
+		UserDetails user = (UserDetails) userAuthenticated.getPrincipal();
+		String token = tokenService.generateToken(user);
+		return new AuthenticatedResponseDTO(user.getUsername(), token, tokenService.getExpiration(token));
 	}
 	
 	public Usuario register(UsuarioDTO usuarioDTO) throws IllegalArgumentException {
 		if (usuarioRepository.existsByUsuario(usuarioDTO.usuario())) {
-			throw new IllegalArgumentException("Nome de usuário já existe!");
+			throw new IllegalArgumentException(String.format("O nome de usuário '%s' já existe", usuarioDTO.usuario()));
 		}
 		if (usuarioRepository.existsByEmail(usuarioDTO.email())) {
-			throw new IllegalArgumentException("E-mail já existe!");
+			throw new IllegalArgumentException(String.format("O e-mail '%s' já existe", usuarioDTO.email()));
 		}
-		
 		Perfil perfilUser = perfilRepository.findById(PerfilEnum.USER).get();
-		
+		List<Telefone> telefones = new ArrayList<>();
+		if (usuarioDTO.telefones() != null ) {
+			telefones = usuarioDTO.telefones()
+					.stream()
+					.map(telefoneDTO -> {
+						return Telefone.builder()
+								.ddd(telefoneDTO.ddd())
+								.prefixo(telefoneDTO.prefixo())
+								.sufixo(telefoneDTO.sufixo())
+								.tipo(telefoneDTO.tipo())
+								.build();
+					})
+					.toList();
+		}
 		Usuario usuario = Usuario.builder()
 				.nome(usuarioDTO.nome())
 				.bio(usuarioDTO.bio())
@@ -62,11 +75,10 @@ public class AuthenticationService {
 				.usuario(usuarioDTO.usuario())
 				.email(usuarioDTO.email())
 				.senha(passwordEncoder.encode(usuarioDTO.senha()))
-				.telefones(usuarioDTO.telefones())
+				.telefones(telefones)
 				.endereco(usuarioDTO.endereco())
 				.perfis(perfilUser)
 				.build();
-
 		usuarioRepository.save(usuario);
 		return usuario;
 	}

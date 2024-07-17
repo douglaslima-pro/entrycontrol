@@ -35,7 +35,14 @@ public class WebSecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests(auth -> auth
+					.requestMatchers("/swagger*/**", "/swagger-ui/**", "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**", "/configuration/**", "/webjars/**").permitAll()
 					.requestMatchers("/auth/**").permitAll()
+					.requestMatchers("/user/search/me").hasAnyRole("USER", "ADMIN")
+					.requestMatchers("/user/update/me").hasAnyRole("USER", "ADMIN")
+					.requestMatchers("/user/search/{id}").hasRole("ADMIN")
+					.requestMatchers("/user/search/all").hasRole("ADMIN")
+					.requestMatchers("/user/update/{id}").hasRole("ADMIN")
+					.requestMatchers("/user/delete/{id}").hasRole("ADMIN")
 					.anyRequest().authenticated()
 					)
 			.csrf(csrf -> csrf.disable())

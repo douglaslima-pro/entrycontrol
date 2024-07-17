@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -31,6 +33,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "tb_usuario")
+@DynamicUpdate
 @Getter
 @Setter
 @NoArgsConstructor
@@ -48,6 +51,7 @@ public class Usuario {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	@Column(name = "data_nascimento")
 	private LocalDate dataNascimento;
+	@Column(columnDefinition = "CHAR(1)")
 	private char sexo;
 	@Column(length = 30, nullable = false, unique = true)
 	private String usuario;
@@ -63,12 +67,7 @@ public class Usuario {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "tb_usuario_perfil", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "nome"))
 	private List<Perfil> perfis;
-	
-	public void adicionarTelefone(Telefone telefone) {
-		telefone.setUsuario(this);
-		telefones.add(telefone);
-	}
-	
+
 	private Usuario(UsuarioBuilder builder) {
 		this.nome = builder.nome;
 		this.bio = builder.bio;
@@ -77,13 +76,15 @@ public class Usuario {
 		this.usuario = builder.usuario;
 		this.email = builder.email;
 		this.senha = builder.senha;
-		this.telefones = builder.telefones
-				.stream()
-				.map(telefone -> {
-					telefone.setUsuario(this);
-					return telefone;
-				})
-				.toList();
+		if (builder.telefones != null) {
+			this.telefones = builder.telefones
+					.stream()
+					.map(telefone -> {
+						telefone.setUsuario(this);
+						return telefone;
+					})
+					.toList();
+		}
 		this.endereco = builder.endereco;
 		this.perfis = builder.perfis;
 	}
