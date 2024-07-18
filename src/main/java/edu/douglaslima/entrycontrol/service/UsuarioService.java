@@ -32,11 +32,10 @@ public class UsuarioService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	public Usuario pesquisarUsuarioAtual() throws NoSuchElementException {
+	public Usuario pesquisarUsuarioAtual() {
 		Authentication userAuthentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) userAuthentication.getPrincipal();
-		return usuarioRepository.findByUsuario(userDetails.getUsername())
-				.orElseThrow(() -> new NoSuchElementException(String.format("Nenhum usuário foi encontrado com o nome de usuário '%s'", userDetails.getUsername())));
+		return usuarioRepository.findByUsuario(userDetails.getUsername()).get();
 	}
 	
 	public Usuario pesquisarUsuarioPeloId(Long id) throws NoSuchElementException {

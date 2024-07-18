@@ -37,16 +37,12 @@ public class TokenService {
 	}
 	
 	public String getUsername(String token) {
-		try {
-			return Jwts.parser()
-					.verifyWith(signingKey())
-					.build()
-					.parseSignedClaims(token)
-					.getPayload()
-					.getSubject();
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("Token nulo ou vazio");
-		}
+		return Jwts.parser()
+				.verifyWith(signingKey())
+				.build()
+				.parseSignedClaims(token)
+				.getPayload()
+				.getSubject();
 	}
 	
 	public boolean isTokenExpired(String token) {

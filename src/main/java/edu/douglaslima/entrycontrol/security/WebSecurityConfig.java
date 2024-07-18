@@ -17,6 +17,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+
+	@Autowired
+	private AuthenticationEntryPointImpl authenticationEntryPoint;
+
+	@Autowired
+	private TokenExceptionHandlerFilter tokenExceptionHandlerFilter;
 	
 	@Autowired
 	private TokenFilter tokenFilter;
@@ -30,7 +36,7 @@ public class WebSecurityConfig {
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
-	
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
@@ -47,8 +53,10 @@ public class WebSecurityConfig {
 					)
 			.csrf(csrf -> csrf.disable())
 			.cors(Customizer.withDefaults())
+			.exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(authenticationEntryPoint))
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(tokenExceptionHandlerFilter, TokenFilter.class);
 		return http.build();
 	}
 

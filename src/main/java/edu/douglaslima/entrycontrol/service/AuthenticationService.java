@@ -1,8 +1,6 @@
 package edu.douglaslima.entrycontrol.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,8 +14,6 @@ import edu.douglaslima.entrycontrol.domain.auth.AuthenticatedResponseDTO;
 import edu.douglaslima.entrycontrol.domain.auth.LoginDTO;
 import edu.douglaslima.entrycontrol.domain.perfil.Perfil;
 import edu.douglaslima.entrycontrol.domain.perfil.PerfilEnum;
-import edu.douglaslima.entrycontrol.domain.telefone.Telefone;
-import edu.douglaslima.entrycontrol.domain.telefone.TelefoneMapper;
 import edu.douglaslima.entrycontrol.domain.usuario.Usuario;
 import edu.douglaslima.entrycontrol.domain.usuario.UsuarioDTO;
 import edu.douglaslima.entrycontrol.domain.usuario.UsuarioMapper;
@@ -41,8 +37,6 @@ public class AuthenticationService {
 	private final PasswordEncoder passwordEncoder;
 	@Autowired
 	private final UsuarioMapper usuarioMapper;
-	@Autowired
-	private final TelefoneMapper telefoneMapper;
 
 	public AuthenticatedResponseDTO login(LoginDTO loginDTO) {
 		UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken(loginDTO.username(), loginDTO.password());
@@ -58,6 +52,25 @@ public class AuthenticationService {
 		}
 		if (usuarioRepository.existsByEmail(usuarioDTO.email())) {
 			throw new IllegalArgumentException(String.format("O e-mail '%s' já existe", usuarioDTO.email()));
+		}
+		if (usuarioDTO.nome() == null) {
+			throw new IllegalArgumentException("O atributo 'nome' é obrigatório!");
+		} else if (usuarioDTO.usuario() == null) {
+			throw new IllegalArgumentException("O atributo 'usuario' é obrigatório!");
+		} else if (usuarioDTO.email() == null) {
+			throw new IllegalArgumentException("O atributo 'email' é obrigatório!");
+		} else if (usuarioDTO.senha() == null) {
+			throw new IllegalArgumentException("O atributo 'senha' é obrigatório!");
+		} else if (usuarioDTO.endereco() == null) {
+			throw new IllegalArgumentException("O atributo 'endereco' é obrigatório!");
+		} else if (usuarioDTO.endereco().getCep() == null) {
+			throw new IllegalArgumentException("O atributo 'cep' é obrigatório!");
+		} else if (usuarioDTO.endereco().getEstado() == null) {
+			throw new IllegalArgumentException("O atributo 'estado' é obrigatório!");
+		} else if (usuarioDTO.endereco().getCidade() == null) {
+			throw new IllegalArgumentException("O atributo 'cidade' é obrigatório!");
+		} else if (usuarioDTO.endereco().getLogradouro() == null) {
+			throw new IllegalArgumentException("O atributo 'logradouro' é obrigatório!");
 		}
 		Perfil perfilUser = perfilRepository.findById(PerfilEnum.USER).get();
 		Usuario usuario = usuarioMapper.toEntity(usuarioDTO);

@@ -77,6 +77,9 @@ public class Usuario {
 		} else {
 			this.telefones.clear();
 		}
+		if (telefones == null) {
+			return;
+		}
 		this.telefones.addAll(
 				telefones
 					.stream()
