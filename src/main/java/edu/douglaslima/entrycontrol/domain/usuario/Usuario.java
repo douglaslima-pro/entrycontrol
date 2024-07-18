@@ -1,6 +1,7 @@
 package edu.douglaslima.entrycontrol.domain.usuario;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -61,6 +63,7 @@ public class Usuario {
 	private String senha;
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonManagedReference
+	@Setter(AccessLevel.NONE)
 	private List<Telefone> telefones;
 	@Embedded
 	private Endereco endereco;
@@ -68,105 +71,20 @@ public class Usuario {
 	@JoinTable(name = "tb_usuario_perfil", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "nome"))
 	private List<Perfil> perfis;
 
-	private Usuario(UsuarioBuilder builder) {
-		this.nome = builder.nome;
-		this.bio = builder.bio;
-		this.dataNascimento = builder.dataNascimento;
-		this.sexo = builder.sexo;
-		this.usuario = builder.usuario;
-		this.email = builder.email;
-		this.senha = builder.senha;
-		if (builder.telefones != null) {
-			this.telefones = builder.telefones
+	public void setTelefones(List<Telefone> telefones) {
+		if (this.telefones == null) {
+			this.telefones = new ArrayList<>();
+		} else {
+			this.telefones.clear();
+		}
+		this.telefones.addAll(
+				telefones
 					.stream()
 					.map(telefone -> {
 						telefone.setUsuario(this);
 						return telefone;
 					})
-					.toList();
-		}
-		this.endereco = builder.endereco;
-		this.perfis = builder.perfis;
-	}
-	
-	public static UsuarioBuilder builder() {
-		return new UsuarioBuilder();
-	}
-	
-	public static class UsuarioBuilder {
-		
-		private String nome;
-		private String bio;
-		private LocalDate dataNascimento;
-		private char sexo;
-		private String usuario;
-		private String email;
-		private String senha;
-		private List<Telefone> telefones;
-		private Endereco endereco;
-		private List<Perfil> perfis;
-		
-		private UsuarioBuilder() {}
-		
-		public UsuarioBuilder nome(String nome) {
-			this.nome = nome;
-			return this;
-		}
-		
-		public UsuarioBuilder bio(String bio) {
-			this.bio = bio;
-			return this;
-		}
-		
-		public UsuarioBuilder dataNascimento(LocalDate dataNascimento) {
-			this.dataNascimento = dataNascimento;
-			return this;
-		}
-		
-		public UsuarioBuilder sexo(char sexo) {
-			this.sexo = sexo;
-			return this;
-		}
-
-		public UsuarioBuilder usuario(String usuario) {
-			this.usuario = usuario;
-			return this;
-		}
-		
-		public UsuarioBuilder email(String email) {
-			this.email = email;
-			return this;
-		}
-		
-		public UsuarioBuilder senha(String senha) {
-			this.senha = senha;
-			return this;
-		}
-
-		public UsuarioBuilder telefones(List<Telefone> telefones) {
-			this.telefones = telefones;
-			return this;
-		}
-
-		public UsuarioBuilder endereco(Endereco endereco) {
-			this.endereco = endereco;
-			return this;
-		}
-
-		public UsuarioBuilder perfis(List<Perfil> perfis) {
-			this.perfis = perfis;
-			return this;
-		}
-
-		public UsuarioBuilder perfis(Perfil... perfis) {
-			this.perfis = Arrays.asList(perfis);
-			return this;
-		}
-		
-		public Usuario build() {
-			return new Usuario(this);
-		}
-		
+					.toList());
 	}
 
 }

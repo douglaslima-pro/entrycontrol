@@ -1,6 +1,7 @@
 package edu.douglaslima.entrycontrol.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,10 @@ import edu.douglaslima.entrycontrol.domain.auth.LoginDTO;
 import edu.douglaslima.entrycontrol.domain.perfil.Perfil;
 import edu.douglaslima.entrycontrol.domain.perfil.PerfilEnum;
 import edu.douglaslima.entrycontrol.domain.telefone.Telefone;
+import edu.douglaslima.entrycontrol.domain.telefone.TelefoneMapper;
 import edu.douglaslima.entrycontrol.domain.usuario.Usuario;
 import edu.douglaslima.entrycontrol.domain.usuario.UsuarioDTO;
+import edu.douglaslima.entrycontrol.domain.usuario.UsuarioMapper;
 import edu.douglaslima.entrycontrol.repository.PerfilRepository;
 import edu.douglaslima.entrycontrol.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +39,10 @@ public class AuthenticationService {
 	private final PerfilRepository perfilRepository;
 	@Autowired
 	private final PasswordEncoder passwordEncoder;
+	@Autowired
+	private final UsuarioMapper usuarioMapper;
+	@Autowired
+	private final TelefoneMapper telefoneMapper;
 
 	public AuthenticatedResponseDTO login(LoginDTO loginDTO) {
 		UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken(loginDTO.username(), loginDTO.password());
@@ -53,32 +60,9 @@ public class AuthenticationService {
 			throw new IllegalArgumentException(String.format("O e-mail '%s' já existe", usuarioDTO.email()));
 		}
 		Perfil perfilUser = perfilRepository.findById(PerfilEnum.USER).get();
-		List<Telefone> telefones = new ArrayList<>();
-		if (usuarioDTO.telefones() != null ) {
-			telefones = usuarioDTO.telefones()
-					.stream()
-					.map(telefoneDTO -> {
-						return Telefone.builder()
-								.ddd(telefoneDTO.ddd())
-								.prefixo(telefoneDTO.prefixo())
-								.sufixo(telefoneDTO.sufixo())
-								.tipo(telefoneDTO.tipo())
-								.build();
-					})
-					.toList();
-		}
-		Usuario usuario = Usuario.builder()
-				.nome(usuarioDTO.nome())
-				.bio(usuarioDTO.bio())
-				.dataNascimento(usuarioDTO.dataNascimento())
-				.sexo(usuarioDTO.sexo())
-				.usuario(usuarioDTO.usuario())
-				.email(usuarioDTO.email())
-				.senha(passwordEncoder.encode(usuarioDTO.senha()))
-				.telefones(telefones)
-				.endereco(usuarioDTO.endereco())
-				.perfis(perfilUser)
-				.build();
+		Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
+		usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+		usuario.setPerfis(Arrays.asList(perfilUser));
 		usuarioRepository.save(usuario);
 		return usuario;
 	}

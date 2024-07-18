@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import edu.douglaslima.entrycontrol.domain.telefone.Telefone;
+import edu.douglaslima.entrycontrol.domain.telefone.TelefoneMapper;
 import edu.douglaslima.entrycontrol.domain.usuario.Usuario;
 import edu.douglaslima.entrycontrol.domain.usuario.UsuarioDTO;
 import edu.douglaslima.entrycontrol.domain.usuario.UsuarioMapper;
@@ -23,6 +25,9 @@ public class UsuarioService {
 	
 	@Autowired
 	private UsuarioMapper usuarioMapper;
+
+	@Autowired
+	private TelefoneMapper telefoneMapper;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -48,6 +53,13 @@ public class UsuarioService {
 		UserDetails userDetails = (UserDetails) userAuthentication.getPrincipal();
 		Usuario usuario = usuarioRepository.findByUsuario(userDetails.getUsername()).get();
 		usuarioMapper.updateUsuarioFromUsuarioDTO(usuarioDTO, usuario);
+		if (usuarioDTO.telefones() != null ) {
+			List<Telefone> telefones = usuarioDTO.telefones()
+					.stream()
+					.map(telefone -> telefoneMapper.toEntity(telefone))
+					.toList();
+			usuario.setTelefones(telefones);
+		}
 		if (usuarioDTO.senha() != null) {
 			usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
 		}
@@ -59,6 +71,13 @@ public class UsuarioService {
 		Usuario usuario = usuarioRepository.findById(id)
 				.orElseThrow(() -> new NoSuchElementException(String.format("Nenhum usuário foi encontrado com o ID %d", id)));
 		usuarioMapper.updateUsuarioFromUsuarioDTO(usuarioDTO, usuario);
+		if (usuarioDTO.telefones() != null ) {
+			List<Telefone> telefones = usuarioDTO.telefones()
+					.stream()
+					.map(telefone -> telefoneMapper.toEntity(telefone))
+					.toList();
+			usuario.setTelefones(telefones);
+		}
 		if (usuarioDTO.senha() != null) {
 			usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
 		}
