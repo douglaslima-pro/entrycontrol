@@ -13,7 +13,6 @@ public interface UsuarioMapper {
 	@Mapping(target = "telefones", source = "telefones")
 	void updateUsuarioFromUsuarioDTO(UsuarioDTO usuarioDTO, @MappingTarget Usuario usuario);
 	
-
 	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 	@Mapping(target = "telefones", source = "telefones")
 	Usuario toEntity(UsuarioDTO usuarioDTO);
