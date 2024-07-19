@@ -65,14 +65,14 @@ mvn install
 
 ### Endpoints
 
-- [/auth/register](https://github.com/douglaslima-pro/entrycontrol/edit/main/README.md#post---authregister)
-- [/auth/login](https://github.com/douglaslima-pro/entrycontrol/edit/main/README.md#post---authlogin)
-- [/user/search/me](https://github.com/douglaslima-pro/entrycontrol/edit/main/README.md#get---searchme)
-- [/user/search/{id}](https://github.com/douglaslima-pro/entrycontrol/edit/main/README.md#get---searchid)
-- [/user/search/all](https://github.com/douglaslima-pro/entrycontrol/edit/main/README.md#get---searchall)
-- [/user/update/me](https://github.com/douglaslima-pro/entrycontrol/edit/main/README.md#put---updateme)
-- [/user/update/{id}](https://github.com/douglaslima-pro/entrycontrol/edit/main/README.md#put---updateid)
-- [/user/delete/{id}](https://github.com/douglaslima-pro/entrycontrol/edit/main/README.md#delete---deleteid)
+- [/auth/register](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#post---authregister)
+- [/auth/login](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#post---authlogin)
+- [/user/search/me](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#get---searchme)
+- [/user/search/{id}](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#get---searchid)
+- [/user/search/all](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#get---searchall)
+- [/user/update/me](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#put---updateme)
+- [/user/update/{id}](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#put---updateid)
+- [/user/delete/{id}](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#delete---deleteid)
 
 ---
 
