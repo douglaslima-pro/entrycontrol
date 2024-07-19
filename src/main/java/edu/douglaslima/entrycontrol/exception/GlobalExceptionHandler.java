@@ -33,7 +33,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		responseBody.setPath(path);
 		return handleExceptionInternal(e, responseBody, defaultHeader(), HttpStatus.BAD_REQUEST, request);
 	}
-
+	
 	@ExceptionHandler(NoSuchElementException.class)
 	public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException e, WebRequest request) {
 		ResponseError responseBody = new ResponseError(HttpStatus.NOT_FOUND.value(), "error-objeto-nao-encontrado", e.getMessage());
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		responseBody.setPath(path);
 		return handleExceptionInternal(e, responseBody, defaultHeader(), HttpStatus.NOT_FOUND, request);
 	}
-
+	
 	@ExceptionHandler(NullPointerException.class)
 	public ResponseEntity<Object> handleNullPointerException(NullPointerException e, WebRequest request) {
 		ResponseError responseBody = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "error-null-pointer-exception", e.getMessage());
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(UsernameNotFoundException.class)
 	public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException e, WebRequest request) {
-		ResponseError responseBody = new ResponseError(HttpStatus.NOT_FOUND.value(), "error-objeto-nao-encontrado", e.getMessage());
+		ResponseError responseBody = new ResponseError(HttpStatus.NOT_FOUND.value(), "error-usuario-nao-encontrado", e.getMessage());
 		String path = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.toUriString();

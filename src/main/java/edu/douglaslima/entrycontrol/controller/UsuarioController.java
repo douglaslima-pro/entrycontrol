@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,13 +41,13 @@ public class UsuarioController {
 		return ResponseEntity.ok(usuarios);
 	}
 	
-	@PostMapping("/update/me")
+	@PutMapping("/update/me")
 	public ResponseEntity<Usuario> atualizarUsuarioAtual(@RequestBody UsuarioDTO usuarioDTO) {
 		Usuario usuario = usuarioService.atualizarUsuarioAtual(usuarioDTO);
 		return ResponseEntity.ok(usuario);
 	}
 	
-	@PostMapping("/update/{id}")
+	@PutMapping("/update/{id}")
 	public ResponseEntity<Usuario> atualizarUsuarioPeloId(@RequestBody UsuarioDTO usuarioDTO, @PathVariable Long id) {
 		Usuario usuario = usuarioService.atualizarUsuarioPeloId(usuarioDTO, id);
 		return ResponseEntity.ok(usuario);

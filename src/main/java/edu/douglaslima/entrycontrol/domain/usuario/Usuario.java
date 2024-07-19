@@ -2,7 +2,6 @@ package edu.douglaslima.entrycontrol.domain.usuario;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.annotations.DynamicUpdate;
@@ -17,6 +16,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -50,11 +51,11 @@ public class Usuario {
 	@Column(length = 150, nullable = false)
 	private String nome;
 	private String bio;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@Column(name = "data_nascimento")
 	private LocalDate dataNascimento;
-	@Column(columnDefinition = "CHAR(1)")
-	private char sexo;
+	@Enumerated(EnumType.STRING)
+	private SexoEnum sexo;
 	@Column(length = 30, nullable = false, unique = true)
 	private String usuario;
 	@Column(length = 150, nullable = false, unique = true)

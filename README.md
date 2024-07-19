@@ -45,13 +45,11 @@ spring.datasource.password=
 > [!NOTE]
 > Em caso de dúvidas sobre o arquivo de configuração, veja: [https://docs.spring.io/spring-boot/appendix/application-properties/index.html](https://docs.spring.io/spring-boot/appendix/application-properties/index.html)
 
-## Instruções de uso
-
-Execute o projeto através da classe **Application.java**
+3. Execute o projeto através da classe **Application.java**
     
-- Em caso de erros, abra o CMD (Prompt de Comando) como administrador
+    3.1 Em caso de erros, abra o CMD (Prompt de Comando) como administrador
 
-- Execute os seguintes comandos **dentro da pasta raiz do projeto**
+    3.2 Execute os seguintes comandos **dentro da pasta raiz do projeto**
 
 ```
 mvn clean
@@ -61,7 +59,31 @@ mvn install
 > [!NOTE]
 > Qualquer dúvida, mande uma mensagem no meu e-mail: douglaslima-pro@outlook.com
 
----
+4. Depois que iniciar o projeto, insira os perfis "USER" e "ADMIN" na tabela `tb_perfil`.
+
+```sql
+INSERT INTO tb_perfil(nome)
+VALUES('USER');
+
+INSERT INTO tb_perfil(nome)
+VALUES('ADMIN');
+```
+
+Caso não insira os perfis no banco de dados, ao tentar registrar um usuário receberá o erro **"error-objeto-nao-encontrado"**:
+
+```json
+{
+    "timestamp": 1721392925075,
+    "status": 404,
+    "error": "error-objeto-nao-encontrado",
+    "message": "No value present",
+    "detail": null,
+    "help": null,
+    "path": "http://localhost:8080/auth/register"
+}
+```
+
+## Instruções de uso
 
 ### Endpoints
 
@@ -222,7 +244,7 @@ Nome de usuário ou senha incorretos
     "id": 1,
     "nome": "Douglas Souza de Lima",
     "bio": "Criador do EntryControl",
-    "dataNascimento": "11/01/2003",
+    "dataNascimento": "2003-01-11",
     "sexo": "M",
     "usuario": "douglaslima",
     "email": "douglaslima-pro@outlook.com",
@@ -308,7 +330,7 @@ Cabeçalho "Authorization" vazio
     "id": 1,
     "nome": "Douglas Souza de Lima",
     "bio": "Criador do EntryControl",
-    "dataNascimento": "11/01/2003",
+    "dataNascimento": "2003-01-11",
     "sexo": "M",
     "usuario": "douglaslima",
     "email": "douglaslima-pro@outlook.com",
@@ -417,7 +439,7 @@ Usuário não possui o perfil "ADMIN"
     "id": 1,
     "nome": "Douglas Souza de Lima",
     "bio": "Criador do EntryControl",
-    "dataNascimento": "11/01/2003",
+    "dataNascimento": "2003-01-11",
     "sexo": "M",
     "usuario": "douglaslima",
     "email": "douglaslima-pro@outlook.com",
@@ -532,8 +554,8 @@ Usuário não possui o perfil "ADMIN"
     "id": 1,
     "nome": "Douglas",
     "bio": "Estudante de Análise e Desenvolvimento de Sistemas",
-    "dataNascimento": "11/01/2003",
-    "sexo":"",
+    "dataNascimento": "2003-01-11",
+    "sexo":"M",
     "usuario": "douglaslima",
     "email": "douglaslima-pro@outlook.com",
     "senha": "$2a$10$Z13ofifAgRyYsHmPjcqpEOwXSrsw9OlW5MTicLTDAQhuMgaFXbsC2",
@@ -562,10 +584,6 @@ Usuário não possui o perfil "ADMIN"
     ]
 }
 ```
-
-> [!NOTE]
-> Depois que atualiza os dados do usuário, o atributo `sexo` é apagado. Esse erro será corrigido em versões futuras do projeto.
-
 
 **RESPOSTAS DE ERRO**
 
@@ -639,8 +657,8 @@ Cabeçalho "Authorization" vazio
     "id": 1,
     "nome": "Douglas",
     "bio": "Estudante de Análise e Desenvolvimento de Sistemas",
-    "dataNascimento": "11/01/2003",
-    "sexo":"",
+    "dataNascimento": "2003-01-11",
+    "sexo":"M",
     "usuario": "douglaslima",
     "email": "douglaslima-pro@outlook.com",
     "senha": "$2a$10$Z13ofifAgRyYsHmPjcqpEOwXSrsw9OlW5MTicLTDAQhuMgaFXbsC2",
@@ -669,10 +687,6 @@ Cabeçalho "Authorization" vazio
     ]
 }
 ```
-
-> [!NOTE]
-> Depois que atualiza os dados do usuário, o atributo `sexo` é apagado. Esse erro será corrigido em versões futuras do projeto.
-
 
 **RESPOSTAS DE ERRO**
 
