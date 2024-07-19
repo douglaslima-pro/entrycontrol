@@ -72,7 +72,7 @@ public class AuthenticationService {
 		} else if (usuarioDTO.endereco().getLogradouro() == null) {
 			throw new IllegalArgumentException("O atributo 'logradouro' é obrigatório!");
 		}
-		Perfil perfilUser = perfilRepository.findById(PerfilEnum.USER).get();
+		Perfil perfilUser = perfilRepository.findByNome(PerfilEnum.USER).get();
 		Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
 		usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
 		usuario.setPerfis(Arrays.asList(perfilUser));

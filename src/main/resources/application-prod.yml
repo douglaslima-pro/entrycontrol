@@ -1,0 +1,15 @@
+spring:
+  datasource: 
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+projeto:
+  security:
+    jwt:
+      secret: ${JWT_SECRET}
+      expiration: 3600000
