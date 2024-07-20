@@ -105,12 +105,12 @@ senha: admin
 
 - [/auth/register](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#post---authregister)
 - [/auth/login](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#post---authlogin)
-- [/user/search/me](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#get---searchme)
-- [/user/search/{id}](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#get---searchid)
-- [/user/search/all](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#get---searchall)
-- [/user/update/me](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#put---updateme)
-- [/user/update/{id}](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#put---updateid)
-- [/user/delete/{id}](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#delete---deleteid)
+- [/user/search/me](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#get---usersearchme)
+- [/user/search/{id}](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#get---usersearchid)
+- [/user/search/all](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#get---usersearchall)
+- [/user/update/me](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#put---userupdateme)
+- [/user/update/{id}](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#put---userupdateid)
+- [/user/delete/{id}](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#delete---userdeleteid)
 
 ---
 
@@ -246,7 +246,7 @@ Nome de usuário ou senha incorretos
 
 ---
 
-### **GET - /search/me**
+### **GET - /user/search/me**
 
 - **Descrição**: Retorna as informações do usuário autenticado
 - **Quem pode acessar**: Usuários autenticados
@@ -333,7 +333,7 @@ Cabeçalho "Authorization" vazio
 
 ---
 
-### **GET - /search/{id}**
+### **GET - /user/search/{id}**
 
 - **Descrição**: Retorna as informações do usuário cujo ID foi informado no parâmetro da URI
 - **Quem pode acessar**: Usuários autenticados e com o perfil "ADMIN"
@@ -443,7 +443,7 @@ Usuário não possui o perfil "ADMIN"
 
 ---
 
-### **GET - /search/all**
+### **GET - /user/search/all**
 
 - **Descrição**: Retorna as informações de todos os usuários cadastrados na API
 - **Quem pode acessar**: Usuários autenticados e com o perfil "ADMIN"
@@ -542,7 +542,7 @@ Usuário não possui o perfil "ADMIN"
 
 ---
 
-### **PUT - /update/me**
+### **PUT - /user/update/me**
 
 - **Descrição**: Atualiza as informações do usuário autenticado
 - **Quem pode acessar**: Usuários autenticados
@@ -646,7 +646,7 @@ Cabeçalho "Authorization" vazio
 
 ---
 
-### **PUT - /update/{id}**
+### **PUT - /user/update/{id}**
 
 - **Descrição**: Atualiza as informações do usuário cujo ID foi informado no parâmetro da URI
 - **Quem pode acessar**: Usuários autenticados e com o perfil "ADMIN"
@@ -773,7 +773,7 @@ Usuário não possui o perfil "ADMIN"
 
 ---
 
-### **DELETE - /delete/{id}**
+### **DELETE - /user/delete/{id}**
 
 - **Descrição**: Exclui de forma permanente as informações do usuário cujo ID foi informado no parâmetro da URI
 - **Quem pode acessar**: Usuários autenticados e com o perfil "ADMIN"
