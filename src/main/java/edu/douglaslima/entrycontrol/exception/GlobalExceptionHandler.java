@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -42,6 +41,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 				.toUriString();
 		responseBody.setPath(path);
 		return handleExceptionInternal(e, responseBody, defaultHeader(), HttpStatus.NOT_FOUND, request);
+	}
+	
+	@ExceptionHandler(UnsupportedOperationException.class)
+	public ResponseEntity<Object> handleUnsupportedOperationException(UnsupportedOperationException e, WebRequest request) {
+		ResponseError responseBody = new ResponseError(HttpStatus.FORBIDDEN.value(), "error-operacao-invalida", e.getMessage());
+		String path = ServletUriComponentsBuilder
+				.fromCurrentRequest()
+				.toUriString();
+		responseBody.setPath(path);
+		return handleExceptionInternal(e, responseBody, defaultHeader(), HttpStatus.FORBIDDEN, request);
 	}
 	
 	@ExceptionHandler(NullPointerException.class)

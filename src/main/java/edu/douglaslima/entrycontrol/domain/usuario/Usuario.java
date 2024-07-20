@@ -90,5 +90,9 @@ public class Usuario {
 					})
 					.toList());
 	}
+	
+	public boolean contemPerfil(Perfil perfil) {
+		return perfis.contains(perfil);
+	}
 
 }
