@@ -87,6 +87,20 @@ Caso não insira os perfis no banco de dados, ao tentar registrar um usuário re
 
 ## Instruções de uso
 
+### Perfil ADMIN
+
+Alguns endpoints requerem autenticação com o perfil "ADMIN".
+
+Utilize as seguintes credenciais com o intuito de testar esses endpoints.
+
+```
+usuario: admin
+senha: admin
+```
+
+> [!IMPORTANT]
+> Não é permitido alterar ou excluir os dados do usuário "ADMIN"!
+
 ### Endpoints
 
 - [/auth/register](https://github.com/douglaslima-pro/entrycontrol/tree/main?tab=readme-ov-file#post---authregister)
@@ -136,7 +150,7 @@ Caso não insira os perfis no banco de dados, ao tentar registrar um usuário re
 ```
 
 > [!IMPORTANT]
-> É obrigatório informar os seguintes atributos: `nome`, `usuario`, `email`, `senha`, `cep`, `estado`, `cidade` e `logradouro`.
+> É obrigatório informar os atributos: `nome`, `usuario`, `email`, `senha`, `cep`, `estado`, `cidade` e `logradouro`.
 
 **RESPOSTA (STATUS 201)**
 ```
@@ -237,6 +251,7 @@ Nome de usuário ou senha incorretos
 - **Descrição**: Retorna as informações do usuário autenticado
 - **Quem pode acessar**: Usuários autenticados
 
+> [!TIP]
 > É necessário inserir o **token Bearer** no cabeçalho "Authorization" antes de enviar a solicitação.
 
 **RESPOSTA (STATUS 200)**
@@ -323,6 +338,7 @@ Cabeçalho "Authorization" vazio
 - **Descrição**: Retorna as informações do usuário cujo ID foi informado no parâmetro da URI
 - **Quem pode acessar**: Usuários autenticados e com o perfil "ADMIN"
 
+> [!TIP]
 > É necessário inserir o **token Bearer** no cabeçalho "Authorization" antes de enviar a solicitação.
 
 **RESPOSTA (STATUS 200)**
@@ -432,6 +448,7 @@ Usuário não possui o perfil "ADMIN"
 - **Descrição**: Retorna as informações de todos os usuários cadastrados na API
 - **Quem pode acessar**: Usuários autenticados e com o perfil "ADMIN"
 
+> [!TIP]
 > É necessário inserir o **token Bearer** no cabeçalho "Authorization" antes de enviar a solicitação.
 
 **RESPOSTA (STATUS 200)**
@@ -530,6 +547,7 @@ Usuário não possui o perfil "ADMIN"
 - **Descrição**: Atualiza as informações do usuário autenticado
 - **Quem pode acessar**: Usuários autenticados
 
+> [!TIP]
 > É necessário inserir o **token Bearer** no cabeçalho "Authorization" antes de enviar a solicitação.
 
 **CORPO**
@@ -633,6 +651,7 @@ Cabeçalho "Authorization" vazio
 - **Descrição**: Atualiza as informações do usuário cujo ID foi informado no parâmetro da URI
 - **Quem pode acessar**: Usuários autenticados e com o perfil "ADMIN"
 
+> [!TIP]
 > É necessário inserir o **token Bearer** no cabeçalho "Authorization" antes de enviar a solicitação.
 
 **CORPO**
@@ -759,6 +778,7 @@ Usuário não possui o perfil "ADMIN"
 - **Descrição**: Exclui de forma permanente as informações do usuário cujo ID foi informado no parâmetro da URI
 - **Quem pode acessar**: Usuários autenticados e com o perfil "ADMIN"
 
+> [!TIP]
 > É necessário inserir o **token Bearer** no cabeçalho "Authorization" antes de enviar a solicitação.
 
 **RESPOSTA (STATUS 204)**
