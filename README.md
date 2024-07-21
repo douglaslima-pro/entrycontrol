@@ -20,7 +20,7 @@
 - PostgreSQL
 
 ## Diagrama de Classes
-![Diagrama de classes da aplicação backend](doc/diagram/Sistema%20de%20Gerenciamento%20de%20Usuários%20-%20Diagrama%20de%20Classes.png)
+![Diagrama de classes da aplicação backend](doc/diagram/diagrama%20de%20classes.png)
 
 ## Instruções de instalação
 ### Pré-requisitos:
